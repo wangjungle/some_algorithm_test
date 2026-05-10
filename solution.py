@@ -1,9 +1,7 @@
-def merge_list():
-	# time:O(m+n) space:O(1)
-	nums1 = [1,2,3,3,0,0,0]
-	m = 4
-	nums2 = [2,5,6]
-	n = 3
+from debug_decorator import debug
+
+@debug(([1,2,3,3,0,0,0], 4, [2,5,6], 3), exec=True)
+def merge_list(nums1, m, nums2, n):
 	p1,p2,pAll = m-1,n-1,m+n-1
 	while p1 >= 0 and p2 >= 0:
 		if nums1[p1] > nums2[p2]:
@@ -21,13 +19,11 @@ def merge_list():
 		nums1[pAll] = nums2[p2]
 		p2 -= 1
 		pAll -= 1
-	print(nums1)
+	return nums1
 
-		
-# merge_list()
 
+@debug(([0,1,2,2,3,0,4,2], 2), exec=True)
 def remove_element(example,val):
-	# time O(n) space O(1)
 	count = 0
 	length = len(example)
 	index = length - 1
@@ -36,16 +32,13 @@ def remove_element(example,val):
 			example[index],example[length - 1 - count] = example[length - 1 - count],example[index]
 			count += 1
 		index -= 1
-	print(example,length - count)
 	return length - count
-	
-	
-# remove_element([0,1,2,2,3,0,4,2],2)
 
+
+@debug([0,1,1,1,3,4,5], exec=True)
 def remove_repeat(nums):
-	# time O(n) space O(1)
 	length = len(nums)
-	unique_element_count = 1 # index为0 的总是独特的
+	unique_element_count = 1
 	unique_element_p = 0
 	index = 1
 	temp = nums[0]
@@ -56,15 +49,11 @@ def remove_repeat(nums):
 			temp = nums[index]
 			nums[unique_element_p] = nums[index]
 		index += 1
-		
-	# print(nums,unique_element_count)
 	return unique_element_count
-	
-# remove_repeat([0,1,1,1,3,4,5])
 
+
+@debug([1,1,1,2,2,2,3,3], exec=True)
 def remove_repeatk(nums):
-	# time:O(n) space O(1) 
-    # k 是允许重复的次数，这题是 2
     k = 2
     if len(nums) <= k:
         return len(nums)
@@ -76,11 +65,10 @@ def remove_repeatk(nums):
             nums[write_p] = nums[read_p]
             write_p += 1
     
-    # print(nums)
     return write_p
-	
-# remove_repeatk([1,1,1,2,2,2,3,3])
 
+
+@debug([3,2,3], exec=True)
 def major_element(nums):
 	res = {}
 	maximum = 0
@@ -94,10 +82,9 @@ def major_element(nums):
 			maximum = res[ele]
 			major_ele = ele
 	return major_ele
-	
+
+@debug([1,1,1,2,2,2,2], exec=True)
 def genius_major_element(nums):
-	# 只适用于能确定众数大于 floor(len(nums))
-	# time O(n) space O(1)
 	candidate = None
 	count = 0
 	for num in nums:
@@ -106,26 +93,18 @@ def genius_major_element(nums):
 		else:
 			count += (1 if num == candidate else -1)
 	return candidate
-	
-	
+
+
 def roll_sequence(nums,k):
 	if not nums:
 		return
 	length = len(nums)
-	
-		
-	
-# print(major_element([3,2,3]))
-# print(genius_major_element([1,1,1,2,2,2,2]))
 
-	
-# 7,1,5,3,6,4
-# 0,-6,4,-2,3,-2
+
+@debug([7,1,5,3,6,4], exec=True)
 def max_profit(prices):
-	# time O(n) space O(1)
 	if not prices:
 		return 0
-	length = len(prices)
 	min_price = float('inf')
 	max_pro = - min_price
 	for price in prices:
@@ -135,23 +114,18 @@ def max_profit(prices):
 			max_pro = price - min_price
 	return max_pro
 
-# print(max_profit([7,1,5,3,6,4]))
-
+@debug([7,1,5,3,6,4], exec=True)
 def max_profit2(prices):
-	# time O(n) space O(1) 
 	if not prices:
 		return 0
-	length = len(prices)
 	profit = 0
-	for i in range(1,length):
+	for i in range(1, len(prices)):
 		if prices[i] > prices[i-1]:
 			profit += prices[i] - prices[i-1]
 	return profit
 
-# print(max_profit2([7,1,5,3,6,4]))
-
+@debug([0], exec=True)
 def can_jump(nums):
-	# time O(n) space O(1)
 	max_reach = 0
 	for index,leap in enumerate(nums):
 		if index > max_reach:
@@ -163,11 +137,9 @@ def can_jump(nums):
 		return True
 	
 	return False
-	
-# print(can_jump([0]))
 
+@debug([2,3,1,1,4], exec=True)
 def jump(nums):
-	# time O(n) SPACE O(n)
     if len(nums) <= 1:
         return 0
     
@@ -186,12 +158,10 @@ def jump(nums):
                 break
                 
     return steps
-	
-	
-# print(jump_to([2,3,1,1,4]))
 
+
+@debug([2,2,2,2,2,2,2,2,2], exec=True)
 def h_index(citations):
-	# time O(n) space O(n)
 	length = len(citations)
 	buckets = [0 for _ in range(length+1)]
 
@@ -207,7 +177,6 @@ def h_index(citations):
 		if total_papers >= h:
 			return h
 
-# print(h_index([2,2,2,2,2,2,2,2,2]))
 
 class RandomizedSet:
 	def __init__(self):
@@ -228,60 +197,42 @@ class RandomizedSet:
 	def getRandom(self):
 		import random
 		return random.choice(list(self.data.keys()))
-		
-# r = RandomizedSet()
-# r.insert(5)
-# print(r.getRandom())
 
+
+@debug([1,2,3,4], exec=True)
 def product_except_self(nums):
     length = len(nums)
     res = [1] * length
     
-    # 1. 顺着扫：res[i] 存储 i 左边所有数的积
-    # res[0] 默认就是 1（左边没东西）
     for i in range(1, length):
         res[i] = res[i-1] * nums[i-1]
         
-    # 2. 倒着扫：用一个变量 right 动态维护右边的积
     right = 1
     for i in range(length - 1, -1, -1):
-        # 现在的 res[i] 是左积，乘上此时的右积就是答案
         res[i] = res[i] * right
-        # 更新右积，给左边那个位置用
         right *= nums[i]
         
     return res
-# 	
-# print(product_except_self([1,2,3,4]))
 
-# gas = [1,2,3,4,5], cost = [3,4,5,1,2]
-# minus = [-2,-2,-2,3,3]
 
-# gas = [2,3,4], cost = [3,4,3]
-# minus = [-1,-1,1]
-
-# minus = [-1,7,-1,8,-9,3]
+@debug(([1,2,3,4,5], [3,4,5,1,2]), exec=True)
 def can_complete_circuit(gas, cost):
-    # 如果总油量还没总消耗多，直接放弃，不可能跑完
     if sum(gas) < sum(cost):
         return -1
     
-    total_tank = 0  # 当前油箱里的油
+    total_tank = 0
     start_station = 0
     
     for i in range(len(gas)):
         total_tank += gas[i] - cost[i]
         
-        # 如果油箱见底了
         if total_tank < 0:
-            # 贪心：前面的站都不行，从下一站重新开始
             start_station = i + 1
             total_tank = 0
             
     return start_station
 
-# print(can_complete_circuit([1,2,3,4,5],[3,4,5,1,2]))
-
+@debug([1,3,2,2,1], exec=True)
 def candy(ratings):
     n = len(ratings)
     candies = [1] * n
@@ -295,9 +246,8 @@ def candy(ratings):
             candies[i] = max(candies[i], candies[i+1] + 1)
             
     return sum(candies)
-			
-	
-# print(candy([1,3,2,2,1]))
+
+@debug([0,1,0,2,1,0,1,3,2,1,2,1], exec=True)
 def trap(height):
 	l_max,r_max = 0,0
 	l,r = 0,len(height) - 1
@@ -317,14 +267,143 @@ def trap(height):
 				res += r_max - height[r]
 			r -= 1
 	return res
-			
-	
-		
-print(trap([0,1,0,2,1,0,1,3,2,1,2,1]))
-			
-	
-	
-			
-		
-	
 
+@debug("MCMXCIV", exec=True)
+def roman_to_int_optimized(s):
+    tables = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}
+    res = 0
+    n = len(s)
+    
+    for i in range(n):
+        value = tables[s[i]]
+        if i < n - 1 and value < tables[s[i+1]]:
+            res -= value
+        else:
+            res += value
+    return res
+
+@debug(10, exec=True)
+def int_to_roman_optimized(num):
+    value_symbols = [
+        (1000, "M"), (900, "CM"), (500, "D"), (400, "CD"),
+        (100, "C"), (90, "XC"), (50, "L"), (40, "XL"),
+        (10, "X"), (9, "IX"), (5, "V"), (4, "IV"), (1, "I")
+    ]
+    
+    res = []
+    for value, symbol in value_symbols:
+        while num >= value:
+            num -= value
+            res.append(symbol)
+            
+    return "".join(res)
+
+@debug("Hello World","fly me to the moon    ")
+def length_of_last_word(s):
+	count = 0
+	start_flag = False
+	for i in range(len(s)-1,-1,-1):
+		if not (((ord(s[i])) <= 122 and ord(s[i]) >= 97) or (ord(s[i]) >= 65 and ord(s[i]) <= 90)):
+			if start_flag:
+				break
+			else:
+				continue
+			
+		start_flag = True
+		count += 1
+	return count
+
+@debug(["flower","flow","flight"],["dog","racecar","car"],["a"])
+def max_common_prefix(strs):
+	if not strs: return ""
+	res = ""
+	for chars in zip(*strs):
+		if len(set(chars)) == 1:
+			res += chars[0]
+		else:
+			break
+	return res
+
+@debug("Hello World","   the sky is blue   ","a good   example")
+def reverse_words(s):
+	s = s.lstrip(" ")
+	s = s.rstrip(" ")
+	l = s.split()
+	l.reverse()
+	return " ".join(l)
+
+@debug(
+		("PAYPALISHIRING",3),
+		("PAYPALISHIRING",4),
+		("A",1),
+		("ABC",1),
+		("ABCDEF",2),
+
+)
+def convert(s,numRows):
+	if numRows == 1:
+		return s
+	rows = ["" for _ in range(numRows)]
+	curr_row = 0
+	going_down = False
+	for c in s:
+		rows[curr_row] += c
+		if curr_row == numRows - 1 or curr_row == 0:
+			going_down = not going_down
+		
+		curr_row += 1 if going_down else -1
+
+	return "".join(rows)
+
+
+
+@debug(("sadbutsad", "sad"), ("leetcode", "leeto"))
+def strStr_kmp(haystack: str, needle: str) -> int:
+    if not needle: return 0
+    n, m = len(haystack), len(needle)
+    
+    nxt = [0] * m
+    j = 0
+    for i in range(1, m):
+        while j > 0 and needle[i] != needle[j]:
+            j = nxt[j - 1]
+        if needle[i] == needle[j]:
+            j += 1
+        nxt[i] = j
+        
+    j = 0
+    for i in range(n):
+        while j > 0 and haystack[i] != needle[j]:
+            j = nxt[j - 1]
+        if haystack[i] == needle[j]:
+            j += 1
+        if j == m:
+            return i - m + 1
+            
+    return -1
+
+@debug(
+    (["This", "is", "an", "example", "of", "text", "justification."], 16),
+    (["What","must","be","acknowledgment","shall","be"], 16),
+    (["Science","is","what","we","understand","well","enough","to","explain","to","a","computer.","Art","is","everything","else","we","do"], 20),
+    exec=True
+)
+def full_justify(words, maxWidth):
+    res = []
+    cur_line = []
+    cur_len = 0 
+
+    for w in words:
+        if cur_len + len(w) + len(cur_line) > maxWidth:
+            for i in range(maxWidth - cur_len):
+                cur_line[i % (len(cur_line) - 1 or 1)] += ' '
+            res.append("".join(cur_line))
+            cur_line, cur_len = [], 0
+        
+        cur_line.append(w)
+        cur_len += len(w)
+
+    last_line = " ".join(cur_line).ljust(maxWidth)
+    res.append(last_line)
+    
+    return res
