@@ -1,5 +1,6 @@
 from debug_decorator import debug
-from collections import Counter
+from collections import Counter,defaultdict
+from tools import *
 
 @debug(("a","b"),("aa","aab"))
 def can_construct(ransomNote,magazine):
@@ -45,7 +46,7 @@ def word_pattern(pattern,s):
 def is_anagram(s,t):
     return Counter(s) == Counter(t)
 
-@debug(["eat", "tea", "tan", "ate", "nat", "bat"],exec=True)
+@debug(["eat", "tea", "tan", "ate", "nat", "bat"])
 def group_anagrams(strs):
     ans = defaultdict(list)
     for s in strs:
@@ -54,3 +55,67 @@ def group_anagrams(strs):
             count[ord(char) - ord('a')] += 1
         ans[tuple(count)].append(s)
     return list(ans.values())
+
+@debug(([2,7,11,15],9), ([3,2,4],6), ([3,3],6))
+def two_sum_hash(nums, target):
+    mapping = {}
+    for i, num in enumerate(nums):
+        complement = target - num
+        if complement in mapping:
+            return [mapping[complement], i]
+        mapping[num] = i
+    return [-1, -1]
+
+@debug(19,2,100)
+def is_happy(n):
+    cache = {}
+    def next_num(num):
+        res = 0
+        while num >= 1:
+            res += (num % 10)**2
+            num = num // 10
+        return res
+    while True:
+        next_n = next_num(n)
+        cache[n] = next_n
+        if next_n == 1:
+            return True
+        elif next_n in cache:
+            return False
+
+        n = next_n
+
+@debug(([1,2,3,1],3),([1,2,3,1,2,3],2))
+def contains_nearby_duplicate(nums, k):
+    last_seen = {}
+
+    for i, num in enumerate(nums):
+        if num in last_seen and i - last_seen[num] <= k:
+            return True
+        last_seen[num] = i
+
+    return False
+
+@debug([100, 4, 200, 1, 3, 2], [0, 3, 7, 2, 5, 8, 4, 6, 0, 1], exec=True)
+def longest_consecutive_optimized(nums):
+    if not nums: return 0
+
+    num_set = set(nums) # 1. 去重并实现 O(1) 查找
+    longest_streak = 0
+
+    for num in num_set:
+        # 2. 判断是否是序列起点
+        # 如果 num-1 在集合里，说明 num 不是起点，直接跳过
+        if num - 1 not in num_set:
+            current_num = num
+            current_streak = 1
+
+            # 3. 只有是起点时，才开始向后数数
+            while current_num + 1 in num_set:
+                current_num += 1
+                current_streak += 1
+
+            longest_streak = max(longest_streak, current_streak)
+
+    return longest_streak
+
